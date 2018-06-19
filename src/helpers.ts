@@ -1,4 +1,4 @@
-interface MakeChildProp {
+interface MakeNodeProp {
     isRoot?: boolean;
     title?: string | null;
 }
@@ -10,20 +10,16 @@ export interface Node {
     error: string;
 }
 
-const makeChild = (prop: MakeChildProp): Node => {
-    const {isRoot = false, title = null} = prop;
-
-    return {
-        title,
-        isRoot,
-        children: [],
-        error: ''
-    };
-};
+export const makeNode = ({isRoot = false, title = null}: MakeNodeProp = {}): Node => ({
+    title,
+    isRoot,
+    children: [],
+    error: ''
+});
 
 export function parseTree(input: string): Node {
     const inputArr = input.split('\n');
-    let treeObj = makeChild({isRoot: true});
+    let treeObj = makeNode({isRoot: true});
     let child;
 
     if (inputArr.length > 1) {
@@ -31,7 +27,7 @@ export function parseTree(input: string): Node {
             inputArr.forEach((page: string) => {
                 const spacesCount = page.search(/\S/);
                 const title = page.trim();
-                child = makeChild({title});
+                child = makeNode({title});
 
                 if (!page || !title) {
                     throw page;
@@ -48,7 +44,7 @@ export function parseTree(input: string): Node {
                         node = node.children[nodeChildrenLength - 1];
                     }
 
-                    node.children.push(makeChild(child));
+                    node.children.push(makeNode(child));
                 } else {
                     throw page;
                 }
