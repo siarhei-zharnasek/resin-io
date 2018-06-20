@@ -34,20 +34,20 @@ class TreeWrapper extends React.Component<Props, State> {
         return null;
     }
 
-    renderChildren = ({children, title}: Node): React.ReactNode => children.length ? (
+    renderChildren = ({children, title}: Node): React.ReactNode => (
         <TreeNode title={title} key={title || 'root'}>
             {
-                children.map(this.renderChildren)
+                children.length ? children.map(this.renderChildren) : null
             }
-        </TreeNode>)
-        : <TreeNode title={title} key={title || 'root'}/>
+        </TreeNode>
+    )
 
     render() {
         const {children, error} = this.state.tree;
 
         return (
             <div>
-                {error ? <div dangerouslySetInnerHTML={{__html: error}}/> : !!children.length && (
+                {error ? <div className="error" dangerouslySetInnerHTML={{__html: error}}/> : !!children.length && (
                     <Tree
                         showLine={true}
                         defaultExpandAll={true}
